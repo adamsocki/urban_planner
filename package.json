@@ -1,0 +1,18 @@
+{
+  "name": "urban-planner",
+  "private": true,
+  "packageManager": "pnpm@10.26.2",
+  "scripts": {
+    "dev": "./docker/up.sh",
+    "dev:app": "pnpm --ignore-workspace -C apps/fullstack dev",
+    "build": "./docker/up.sh",
+    "start": "pnpm --ignore-workspace -C apps/fullstack start",
+    "build:app": "pnpm --ignore-workspace -C apps/fullstack build",
+    "lint": "pnpm --ignore-workspace -C apps/fullstack lint",
+    "test": "pnpm --ignore-workspace -C apps/fullstack test",
+    "docker:up": "./docker/up.sh"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.0"
+  }
+}

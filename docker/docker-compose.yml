@@ -1,0 +1,50 @@
+services:
+  db:
+    image: postgres:16.1
+    container_name: urban-planner-db
+    env_file:
+      - ../.env.docker
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-urban_planner}",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  fullstack:
+    build:
+      context: ../apps/fullstack
+      dockerfile: dev.Dockerfile
+    container_name: urban-planner-fullstack
+    env_file:
+      - ../.env.docker
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    command: /bin/sh -c 'blitz prisma migrate deploy && blitz prisma generate && pnpm dev'
+
+  prisma-studio:
+    build:
+      context: ../apps/fullstack
+      dockerfile: dev.Dockerfile
+    container_name: urban-planner-prisma-studio
+    env_file:
+      - ../.env.docker
+    ports:
+      - "5555:5555"
+    depends_on:
+      db:
+        condition: service_healthy
+    command: /bin/sh -c 'blitz prisma migrate deploy && blitz prisma generate && pnpm studio'
+
+volumes:
+  db_data:
