@@ -1,5 +1,15 @@
 # Urban Planner - Project Setup Plan (Revised)
 
+## Note on Learning & Development
+
+This plan is designed with TypeScript learning in mind. Throughout implementation:
+
+- **Each architectural choice is intentional** - We'll explain why monorepo structure, package organization, and naming conventions are used
+- **Type patterns matter** - Prisma schemas, API responses, and module exports are carefully typed to teach best practices
+- **Code comments are valuable** - Complex logic, type guards, and design decisions are explained inline with comments in the actual code
+- **Trade-offs are documented** - When choosing between approaches, we document why one won out
+- **Comments help you follow along** - Every file includes comments explaining the purpose, structure, and reasoning so you can understand how it all fits together
+
 ## Overview
 
 Set up a new urban planning application at:
@@ -395,6 +405,26 @@ export default WelcomePage
 
 Redirect unauthenticated users from `/` to `/welcome` (server-side) by updating `apps/fullstack/pages/index.tsx`
 with a `getServerSideProps` that checks auth/session and redirects as needed.
+
+---
+
+## Phase 3.5: Design System & UI Consistency
+
+The application uses a **centralized design system** documented in [DESIGN_LANGUAGE.md](./DESIGN_LANGUAGE.md).
+
+**Key Principles:**
+- All styled components are defined in `apps/fullstack/app/components/elements.tsx`
+- Tailwind CSS for utility-first styling with dark mode support
+- Consistent typography, colors, spacing using design tokens
+- Radix UI for accessible component primitives
+
+When building new UI features, always:
+1. Check `elements.tsx` for existing components
+2. Follow the B3Size (xxs, xs, sm, md, lg) and B3Variant (default, primary, quiet, code, destructive) patterns
+3. Ensure dark mode compatibility
+4. Support keyboard navigation and accessibility
+
+See [DESIGN_LANGUAGE.md](./DESIGN_LANGUAGE.md) for complete guidelines, examples, and best practices.
 
 ---
 

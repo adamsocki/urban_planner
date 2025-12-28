@@ -2,6 +2,8 @@
 
 This directory contains Docker configuration for the Urban Planner development environment.
 
+**Note:** Configuration here demonstrates containerization patterns and best practices. The docker-compose.yml file and related configs include comments explaining setup decisions (volume management, service dependencies, environment variable handling) to support TypeScript and development learning. These comments help you understand why each part of the Docker setup is configured the way it is.
+
 ## Services
 
 - **db**: PostgreSQL 16.1 database

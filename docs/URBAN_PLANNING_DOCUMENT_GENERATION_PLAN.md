@@ -1,8 +1,37 @@
 # Urban Planning Document Generation Implementation Plan
 
+## TypeScript & Learning Principles
+
+This document generation system is built with emphasis on clear, understandable code:
+
+- **Type safety first** - Use TypeScript's type system to model document structures and data flows
+- **Explicit over implicit** - Class methods and interfaces are clearly documented with examples
+- **Patterns over magic** - Standard patterns (decorators, factories, services) are preferred over clever code
+- **Comments on why** - Implementation includes reasoning for complex decisions in the actual code
+- **Code is educational** - Every file and function includes comments explaining what it does, why it exists, and how it connects to other parts of the system
+
+Code examples throughout show best practices in TypeScript design patterns, and actual implementation includes helpful comments to guide understanding.
+
+### UI & Design Consistency
+
+All user-facing components follow the design system documented in [DESIGN_LANGUAGE.md](./DESIGN_LANGUAGE.md). When building document generation UI:
+- Use components from the centralized design system (`apps/fullstack/app/components/elements.tsx`)
+- Follow the established sizing (B3Size) and variant (B3Variant) patterns
+- Ensure dark mode support
+- Maintain accessibility standards
+
+This ensures the document generation interface has consistent, professional styling aligned with the rest of the application.
+
 ## Overview
 
 Build an automated urban planning document generation system from the ground up. This plan outlines the core project/module architecture with document templating, data integration, and export capabilities.
+
+## Repo conventions (Planner namespace)
+
+In this repo, new “Planner” features should live under the `planner/` namespace so we can keep upstream Placemark updates manageable:
+
+- Routes: `apps/fullstack/pages/planner/*`
+- Implementation: `apps/fullstack/app/planner/*` (future: `app/planner/projects`, `app/planner/modules`, `app/planner/documents`, etc.)
 
 ## Planned Architecture Components
 
