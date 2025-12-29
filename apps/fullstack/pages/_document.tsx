@@ -18,6 +18,20 @@ class MyDocument extends Document {
           />
         </Head>
         <body>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+  (function() {
+    try {
+      var pref = localStorage.getItem('theme-preference') || 'SYSTEM';
+      var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var isDark = pref === 'DARK' || (pref === 'SYSTEM' && systemDark);
+      if (isDark) document.body.classList.add('dark');
+    } catch (e) {}
+  })();
+              `,
+            }}
+          />
           <Main />
           <NextScript />
         </body>

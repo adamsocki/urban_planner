@@ -183,7 +183,7 @@ export default api(async function workOSCallback(req, res, ctx) {
     await session.$create({
       userId: user.id,
       orgId: organization.id,
-      darkMode: user.darkMode,
+      themePreference: user.themePreference,
       coordinateOrder: user.coordinateOrder,
       roles: [user.role, user.memberships[0].role],
     });

@@ -3,7 +3,7 @@ import {
   FeatureCollectionRowDisplay,
   FolderRowDisplay,
 } from "app/components/feature_collection/row_display";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import getWrappedFeatureCollectionTree, {
   TreeFolder,
   TreeWfc,
@@ -21,7 +21,6 @@ import {
 } from "@radix-ui/react-icons";
 import { Button, styledInlineA } from "./elements";
 import { CreateMap } from "app/components/create_map";
-import { useUpdateUser } from "app/hooks/update_user";
 import { useAtom, useSetAtom } from "jotai";
 import { dialogAtom, listModeAtom, showFolderTreeAtom } from "state/jotai";
 import { Routes } from "@blitzjs/next";
@@ -45,6 +44,7 @@ import {
   WrappedFeatureCollectionFolder,
 } from "@prisma/client";
 import { FolderDetails } from "app/components/icons";
+import { THEME_PREFERENCE_CHANGE_EVENT } from "app/lib/theme";
 
 const BREADCRUMB_CLASSES =
   "flex gap-x-2 items-center py-0.5 px-2 hover:underline";
@@ -197,9 +197,18 @@ export function WrappedFeatureCollectionList() {
   const parent = useParent();
   const [listMode, setListMode] = useAtom(listModeAtom);
   const [showFolderTree, setShowFolderTree] = useAtom(showFolderTreeAtom);
-  const {
-    user: { darkMode },
-  } = useUpdateUser();
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    const read = () => {
+      setDarkMode(document.body.classList.contains("dark"));
+    };
+    read();
+    window.addEventListener(THEME_PREFERENCE_CHANGE_EVENT, read);
+    return () => {
+      window.removeEventListener(THEME_PREFERENCE_CHANGE_EVENT, read);
+    };
+  }, []);
 
   const sensor = useSensors(
     useSensor(PointerSensor, {

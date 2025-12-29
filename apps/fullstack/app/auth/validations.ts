@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { name, password, email, invitationToken } from "app/core/utils";
-import { LengthUnit, AreaUnit } from "@prisma/client";
+import { LengthUnit, AreaUnit, ThemePreference } from "@prisma/client";
 
 export const Signup = z.object({
   email,
@@ -34,7 +34,7 @@ export const SwitchOrganization = z.object({
 
 export const UpdateUserOptions = z.object({
   name: z.optional(name),
-  darkMode: z.optional(z.boolean()),
+  themePreference: z.optional(z.nativeEnum(ThemePreference)),
   lengthUnits: z.optional(z.nativeEnum(LengthUnit)),
   areaUnits: z.optional(z.nativeEnum(AreaUnit)),
   onboardDocumentationHighlights: z.optional(z.boolean()),

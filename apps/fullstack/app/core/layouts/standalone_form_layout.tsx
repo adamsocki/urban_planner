@@ -1,7 +1,8 @@
-import { H1, MinimalHeader, styledInlineA } from "app/components/elements";
+import { H1, MinimalHeader } from "app/components/elements";
+import { Footer } from "app/components/footer";
 import Notifications from "app/components/notifications";
+import { ThemeEffect } from "app/components/dark_mode_effect";
 import clsx from "clsx";
-import Link from "next/link";
 import type { LayoutProps } from "./shared";
 import { LayoutHead } from "./shared";
 
@@ -26,13 +27,10 @@ const StandaloneFormLayout = ({
             {children}
           </div>
         </div>
-        <div className="mx-auto max-w-sm px-8 md:px-0 w-full py-4 text-sm">
-          <Link className={styledInlineA} href="/about">
-            © Planner
-          </Link>
-        </div>
+        <Footer maxWidthClassName="mx-auto max-w-sm px-8 md:px-0 w-full" />
       </div>
       <Notifications />
+      <ThemeEffect />
     </>
   );
 };

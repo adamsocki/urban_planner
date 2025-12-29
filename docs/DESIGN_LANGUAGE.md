@@ -8,6 +8,77 @@ This guide documents the design system, provides patterns for common use cases, 
 
 ---
 
+## Logo & Brand Identity
+
+### PlacemarkIcon - Urban Nodes Network
+
+**Location**: [`apps/fullstack/app/components/elements.tsx:68-171`](../apps/fullstack/app/components/elements.tsx#L68-L171)
+
+The application logo represents an **urban planning network** with a central hub and satellite zones, embodying the core mission of urban systems thinking.
+
+#### Visual Metaphor
+
+```
+Central Hub (large node)     = Downtown/planning center/core district
+Satellite Nodes (varied)     = Neighborhoods/zones/districts of different scales
+Connection Lines             = Infrastructure/transit/planning relationships
+```
+
+#### Design Philosophy
+
+**Minimal & Geometric**
+- Clean circles and straight lines
+- No ornamental details - pure functional geometry
+- Scales well from 16px (favicon) to 512px (splash screen)
+
+**Systems Thinking**
+- Network topology suggests interconnected urban systems
+- Hybrid hub-and-spoke + mesh connections = centralized planning + distributed relationships
+- Mirrors real urban planning: central districts with radiating neighborhoods that also interconnect
+
+**Hierarchical but Organic**
+- Central node (r=35) is largest - visual importance
+- Satellites vary in size (r=20-25) - suggests different zone types/scales
+- Asymmetric placement breaks rigid grid - more natural, livable feel
+- Reflects real cities: not perfectly uniform, but purposefully organized
+
+#### Animation Language
+
+**Subtle & Professional**
+- Gentle 5% scale on hover - indicates interactivity without distraction
+- Staggered timing (400-600ms) - creates organic "ripple" through the network
+- Central hub scales most dramatically (125%) - reinforces hierarchy
+- Connection lines fade up on hover - draws attention to relationships
+
+**Why animation matters:**
+- Reinforces the "living system" metaphor of urban planning
+- Professional polish without being flashy
+- GPU-accelerated CSS (no JavaScript) for performance
+
+#### Dark Mode Integration
+
+The icon uses `currentColor` and low-opacity white to work seamlessly in both themes:
+- Light mode: dark icon with subtle light detail
+- Dark mode: light icon with subtle white detail
+- Inner ring at 30% opacity is "inversion-safe" (works on both backgrounds)
+
+#### Brand Personality
+
+What the logo communicates:
+- **Professional** - Clean, minimal, geometric
+- **Systemic** - Shows relationships and connections
+- **Modern** - Contemporary design aesthetic
+- **Purposeful** - Every element has meaning (not decorative)
+- **Urban** - Evokes city planning, zoning, infrastructure
+
+The logo embodies "minimal urban planning themed" while being distinctive enough to serve as a memorable brand mark.
+
+#### Implementation Details
+
+For the technical implementation (SVG composition, animation choreography, TypeScript patterns), see [TypeScript Learnings - Urban Nodes Icon](./TYPESCRIPT_LEARNINGS.md#urban-nodes-network-icon).
+
+---
+
 ## Design System Architecture
 
 ### Core Files

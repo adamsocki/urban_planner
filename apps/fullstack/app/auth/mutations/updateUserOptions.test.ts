@@ -25,16 +25,16 @@ describe("updateUserOptions", () => {
     ).resolves.toHaveProperty("coordinateOrder", "LONLAT");
   });
 
-  it("darkMode", async () => {
+  it("themePreference", async () => {
     const { ctx } = await getRandomMockCtxAndUser();
     await expect(
       updateUserOptions(
         {
-          darkMode: true,
+          themePreference: "DARK",
         },
         ctx
       )
-    ).resolves.toHaveProperty("darkMode", true);
+    ).resolves.toHaveProperty("themePreference", "DARK");
   });
 
   it("name", async () => {

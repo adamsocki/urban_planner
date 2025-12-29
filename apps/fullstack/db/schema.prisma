@@ -64,6 +64,12 @@ enum CoordinateOrder {
   LATLON
 }
 
+enum ThemePreference {
+  LIGHT
+  SYSTEM
+  DARK
+}
+
 enum WrappedFeatureCollectionAccess {
   PRIVATE
   PUBLIC
@@ -310,7 +316,7 @@ model User {
   name                           String?
   email                          String          @unique
   hashedPassword                 String?
-  darkMode                       Boolean         @default(false)
+  themePreference                ThemePreference @default(SYSTEM)
   role                           GlobalRole      @default(CUSTOMER)
   coordinateOrder                CoordinateOrder @default(LONLAT)
   lengthUnits                    LengthUnit      @default(meters)

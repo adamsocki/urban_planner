@@ -9,7 +9,7 @@ import { MapContext } from "app/context/map_context";
 import { Legend } from "app/components/legend";
 import {
   Button,
-  PlacemarkIcon,
+  PlannerIcon,
   PopoverContent2,
   styledButton,
 } from "./elements";
@@ -158,7 +158,7 @@ export function PlacemarkInnerPublic({
         text-purple-500 hover:text-purple-700 dark:hover:text-purple-300"
             title="Home"
           >
-            <PlacemarkIcon className="w-8 h-8" />
+            <PlannerIcon className="w-8 h-8" />
           </Link>
           <div className="whitespace-nowrap truncate">{meta.name}</div>
           <div className="w-2" />

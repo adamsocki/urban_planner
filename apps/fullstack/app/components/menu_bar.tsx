@@ -9,10 +9,8 @@ import {
   GitHubLogoIcon,
   KeyboardIcon,
   LockClosedIcon,
-  MoonIcon,
   ReaderIcon,
   Share1Icon,
-  SunIcon,
   SymbolIcon,
 } from "@radix-ui/react-icons";
 import { Feedback } from "app/components/feedback";
@@ -26,7 +24,7 @@ import * as P from "@radix-ui/react-popover";
 import { formatCount } from "app/lib/utils";
 import {
   Button,
-  PlacemarkIcon,
+  PlannerIcon,
   DDContent,
   StyledItem,
   StyledTooltipArrow,
@@ -72,7 +70,7 @@ function WrappedFeatureCollectionInfo() {
           text-purple-500 hover:text-purple-700 dark:hover:text-purple-300"
         title="Home"
       >
-        <PlacemarkIcon className="w-8 h-8" />
+        <PlannerIcon className="w-8 h-8" />
       </Link>
       <PersistedInfo metadata={meta} />
     </>
@@ -86,7 +84,7 @@ function WrappedFeatureCollectionInfo() {
           text-purple-500 hover:text-purple-700 dark:hover:text-purple-300"
         title="Home"
       >
-        <PlacemarkIcon className="w-8 h-8" />
+        <PlannerIcon className="w-8 h-8" />
       </Link>
       <MemoryInfo metadata={meta} />
     </>
@@ -285,8 +283,8 @@ export const MenuBarPlay = memo(function MenuBar() {
           inline-flex gap-x-2 items-center"
           title="Home"
         >
-          <PlacemarkIcon className="w-8 h-8" />
-          Placemark{" "}
+          <PlannerIcon className="w-8 h-8" />
+          Planner{" "}
           <span
             className="bg-purple-100
             border border-purple-300
@@ -368,7 +366,7 @@ export function HelpDot() {
 }
 
 export function UserDot() {
-  const { user: currentUser, setUser } = useUpdateUser();
+  const { user: currentUser } = useUpdateUser();
   const router = useRouter();
   return (
     <DD.Root>
@@ -389,15 +387,6 @@ export function UserDot() {
         </Button>
       </DD.Trigger>
       <DDContent>
-        <StyledItem
-          onSelect={() => {
-            void setUser({
-              darkMode: !currentUser.darkMode,
-            });
-          }}
-        >
-          Toggle dark mode {currentUser.darkMode ? <SunIcon /> : <MoonIcon />}
-        </StyledItem>
         <StyledItem
           onSelect={() => {
             void router.push(Routes.Settings());

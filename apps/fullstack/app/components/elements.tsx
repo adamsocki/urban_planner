@@ -23,7 +23,7 @@ import {
   EyeOpenIcon,
 } from "@radix-ui/react-icons";
 import { SUPPORT_EMAIL } from "app/lib/constants";
-import Placemark from "./icons/placemark";
+import Planner from "./icons/planner";
 import { toast } from "react-hot-toast";
 import { Portal } from "@radix-ui/react-portal";
 
@@ -65,56 +65,107 @@ export function Hint({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function PlacemarkIcon({ className }: React.HTMLAttributes<SVGElement>) {
-  const circleAttrs = {
-    r: "17.5",
-    stroke: "currentColor",
-    strokeWidth: "15",
-  } as const;
+export function PlannerIcon({ className }: React.HTMLAttributes<SVGElement>) {
+  // Urban planning network theme: nodes represent districts/zones, lines show connections
+  // The composition suggests a planning network with a central hub and satellite zones
+
   return (
     <svg
       viewBox="0 0 300 300"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={className}
+      className={clsx(
+        // Base styles
+        className,
+        // Smooth transitions for all animated properties
+        // Using 'transition-all' allows color, transform, and opacity to animate together
+        "transition-all duration-300 ease-out",
+        // Subtle hover effects: slight scale creates depth without being distracting
+        // transform-origin center ensures the icon scales from its center point
+        "hover:scale-105",
+        // Group allows child elements to respond to parent hover state
+        "group"
+      )}
     >
-      <circle cx="75" cy="75" {...circleAttrs} />
-      <circle cx="225" cy="225" {...circleAttrs} />
-      <circle cx="225" cy="75" {...circleAttrs} />
-      <circle cx="75" cy="225" {...circleAttrs} />
-      <line
-        x1="75"
-        y1="95"
-        x2="75"
-        y2="208"
+      {/* Connection lines - draw first so nodes appear on top */}
+      {/* These represent infrastructure, connections between urban zones */}
+      <g
         stroke="currentColor"
-        strokeWidth="20"
+        strokeWidth="8"
+        className="opacity-60 transition-opacity duration-300 group-hover:opacity-80"
+      >
+        {/* Hub-to-satellite connections radiating from center */}
+        <line x1="150" y1="150" x2="75" y2="75" />
+        <line x1="150" y1="150" x2="225" y2="75" />
+        <line x1="150" y1="150" x2="240" y2="180" />
+        <line x1="150" y1="150" x2="180" y2="240" />
+        <line x1="150" y1="150" x2="75" y2="210" />
+
+        {/* Outer node connections - creates a network, not just hub-and-spoke */}
+        <line x1="75" y1="75" x2="225" y2="75" />
+        <line x1="225" y1="75" x2="240" y2="180" />
+      </g>
+
+      {/* Nodes - represent urban districts, planning zones, or key locations */}
+      {/* Varying sizes suggest hierarchy (major vs minor zones) */}
+
+      {/* Satellite nodes - smaller districts/zones */}
+      <circle
+        cx="75"
+        cy="75"
+        r="25"
+        fill="currentColor"
+        className="transition-transform duration-400 group-hover:scale-110 origin-center"
       />
-      <line
-        x1="226"
-        y1="95"
-        x2="226"
-        y2="208"
-        stroke="currentColor"
-        strokeWidth="20"
+      <circle
+        cx="225"
+        cy="75"
+        r="22"
+        fill="currentColor"
+        className="transition-transform duration-450 group-hover:scale-110 origin-center"
       />
-      <line
-        x1="95"
-        y1="75"
-        x2="208"
-        y2="75"
-        stroke="currentColor"
-        strokeWidth="20"
+      <circle
+        cx="240"
+        cy="180"
+        r="20"
+        fill="currentColor"
+        className="transition-transform duration-500 group-hover:scale-110 origin-center"
       />
-      <line
-        x1="95"
-        y1="225"
-        x2="208"
-        y2="225"
-        stroke="currentColor"
-        strokeWidth="20"
+      <circle
+        cx="180"
+        cy="240"
+        r="22"
+        fill="currentColor"
+        className="transition-transform duration-420 group-hover:scale-110 origin-center"
       />
-      <rect x="110" y="110" width="80" height="80" rx="5" fill="currentColor" />
+      <circle
+        cx="75"
+        cy="210"
+        r="24"
+        fill="currentColor"
+        className="transition-transform duration-480 group-hover:scale-110 origin-center"
+      />
+
+      {/* Central hub - the main planning node/downtown/core */}
+      {/* Largest node with most dramatic hover effect */}
+      <circle
+        cx="150"
+        cy="150"
+        r="35"
+        fill="currentColor"
+        className="transition-transform duration-600 group-hover:scale-125 origin-center"
+      />
+
+      {/* Inner detail in central hub - suggests complexity/importance */}
+      <circle
+        cx="150"
+        cy="150"
+        r="15"
+        fill="none"
+        stroke="white"
+        strokeWidth="3"
+        className="opacity-30 transition-all duration-600 group-hover:opacity-60 group-hover:scale-125 origin-center"
+      />
     </svg>
   );
 }
@@ -847,8 +898,8 @@ export const MinimalHeaderLogoLink = () => {
                       text-purple-500 hover:text-purple-700 dark:hover:text-purple-300"
       title="Home"
     >
-      <PlacemarkIcon className="w-8 h-8" />
-      <Placemark className="hidden sm:block w-24 text-gray-700 dark:text-gray-300" />
+      <PlannerIcon className="w-8 h-8" />
+      <Planner className="hidden sm:block w-24 text-gray-700 dark:text-gray-300" />
     </Link>
   );
 };

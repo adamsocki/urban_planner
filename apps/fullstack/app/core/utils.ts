@@ -27,7 +27,7 @@ export async function createSession(user: UserForSession, ctx: Ctx) {
 
   const shared = {
     userId: user.id,
-    darkMode: user.darkMode,
+    themePreference: user.themePreference,
     coordinateOrder: user.coordinateOrder,
   } as const;
 

@@ -414,7 +414,7 @@ declare module "@blitzjs/auth" {
       // - Their role in the currently active organization.
       roles: Role[];
       orgId?: Organization["id"];
-      darkMode: boolean;
+      themePreference: User["themePreference"];
       coordinateOrder: User["coordinateOrder"];
     };
   }

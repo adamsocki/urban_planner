@@ -24,6 +24,8 @@ import { useBreakpoint } from "app/hooks/use_responsive";
 import { Feedback } from "app/components/feedback";
 import clsx from "clsx";
 import { KeybindingsIndex } from "app/components/keybindings_index";
+import { Footer } from "app/components/footer";
+import { useUpdateUser } from "app/hooks/update_user";
 
 export function UserBlock() {
   const currentUser = useCurrentUser();
@@ -63,13 +65,14 @@ const AuthenticatedPageLayout = ({
   fullWidth?: boolean;
 }) => {
   const isSm = useBreakpoint("sm");
+  const { user, setUser } = useUpdateUser();
 
   return (
     <Provider>
       <>
         <LayoutHead title={title || ""}></LayoutHead>
         <div>
-          <div className="block min-h-screen bg-white text-gray-700 dark:bg-gray-800 dark:text-white">
+          <div className="flex flex-col min-h-screen bg-white text-gray-700 dark:bg-gray-800 dark:text-white">
             <Suspense fallback={<MinimalHeader />}>
               <div className="flex flex-auto border-b dark:border-black border-gray-200 px-2 lg:px-0">
                 <nav className="w-full max-w-4xl mx-auto flex items-center flex-auto gap-x-2 py-2">
@@ -112,6 +115,13 @@ const AuthenticatedPageLayout = ({
                 </DefaultErrorBoundary>
               </div>
             </div>
+            <Footer
+              maxWidthClassName="mx-auto max-w-4xl px-6 md:px-8"
+              user={user}
+              onThemePreferenceChange={(themePreference) => {
+                void setUser({ themePreference });
+              }}
+            />
           </div>
         </div>
         <KeybindingsIndex />

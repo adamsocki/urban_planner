@@ -10,7 +10,7 @@ export async function getCurrentUserInternal(ctx: AuthenticatedCtx) {
       name: true,
       email: true,
       role: true,
-      darkMode: true,
+      themePreference: true,
       coordinateOrder: true,
       areaUnits: true,
       workOsId: true,

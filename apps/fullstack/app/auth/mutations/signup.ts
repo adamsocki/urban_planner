@@ -16,7 +16,7 @@ export const INSERTED_USER_SELECT = {
   name: true,
   email: true,
   role: true,
-  darkMode: true,
+  themePreference: true,
   coordinateOrder: true,
   onboardDocumentationHighlights: true,
   lengthUnits: true,
