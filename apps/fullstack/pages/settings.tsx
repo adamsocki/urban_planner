@@ -78,7 +78,7 @@ function WalkthroughRow() {
           onClick={() => {
             restart();
             toast.success(
-              `You’ll see the introductory walkthrough when you go to your maps index page`
+              `You’ll see the introductory walkthrough when you go to your projects index page`
             );
           }}
         >

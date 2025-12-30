@@ -6,12 +6,261 @@ A collection of TypeScript patterns, techniques, and concepts learned while buil
 
 ## Table of Contents
 
+- [Server-Side Rendering (SSR)](#server-side-rendering-ssr)
+  - [Queries vs Mutations in SSR Context](#queries-vs-mutations-in-ssr-context)
+  - [Suspense Boundaries and Dynamic Server Usage](#suspense-boundaries-and-dynamic-server-usage)
+  - [Blitz.js Route Generation](#blitzjs-route-generation)
 - [Type Utilities & React Props](#type-utilities--react-props)
   - [React.HTMLAttributes for SVG Components](#reacthtmlattributes-for-svg-components)
 - [Const Assertions](#const-assertions)
   - [Sharing Props with `as const`](#sharing-props-with-as-const)
 - [SVG Composition & Animation](#svg-composition--animation)
   - [Urban Nodes Network Icon](#urban-nodes-network-icon)
+
+---
+
+## Server-Side Rendering (SSR)
+
+### Queries vs Mutations in SSR Context
+
+**Problem Encountered**: `DYNAMIC_SERVER_USAGE` error when loading the index page after adding theme preference support.
+
+**Location**: [`apps/fullstack/app/core/layouts/authenticated_page_layout.tsx`](../apps/fullstack/app/core/layouts/authenticated_page_layout.tsx), [`apps/fullstack/app/components/footer.tsx`](../apps/fullstack/app/components/footer.tsx)
+
+**The Bug:**
+```typescript
+// ❌ BROKEN - Causes DYNAMIC_SERVER_USAGE error
+const AuthenticatedPageLayout = ({ children }) => {
+  const { user, setUser } = useUpdateUser(); // ⚠️ useQuery outside Suspense!
+
+  return (
+    <Provider>
+      <Suspense fallback={<Loading />}>
+        {children}
+      </Suspense>
+      <Footer user={user} onThemePreferenceChange={(pref) => setUser({ themePreference: pref })} />
+    </Provider>
+  );
+};
+
+// Inside useUpdateUser hook:
+export function useUpdateUser() {
+  const [user] = useQuery(getCurrentUser, null); // ⚠️ Fetches from DB during SSR!
+  // ...
+}
+```
+
+**What was happening:**
+
+1. Next.js tries to server-render the page
+2. React starts rendering `AuthenticatedPageLayout` component
+3. `useUpdateUser()` is called **outside any Suspense boundary**
+4. This hook calls `useQuery(getCurrentUser)` which needs to:
+   - Access session cookies from the request
+   - Query the database for user data
+5. This is "dynamic server usage" - it depends on runtime request data
+6. Next.js/React can't handle this outside a Suspense boundary during SSR
+7. Error: `DYNAMIC_SERVER_USAGE` → page returns 500
+
+**The Fix:**
+```typescript
+// ✅ FIXED - Mutation is safe during SSR
+export function Footer({ maxWidthClassName }: { maxWidthClassName: string }) {
+  // useMutation doesn't fetch - just prepares a function to call later
+  const [updateUserOptionsMutation] = useMutation(updateUserOptions);
+
+  return (
+    <footer className={maxWidthClassName}>
+      <ThemeSwitcher
+        onChange={(themePreference) => {
+          // Mutation only runs when user clicks - not during SSR
+          void updateUserOptionsMutation({ themePreference });
+        }}
+      />
+    </footer>
+  );
+}
+```
+
+**Why this works:**
+
+| Hook Type | SSR Behavior | Safe Outside Suspense? | Use Case |
+|-----------|--------------|------------------------|----------|
+| `useQuery` | Tries to fetch data immediately | ❌ No - needs Suspense | Reading data from server |
+| `useMutation` | Just prepares a function | ✅ Yes - no side effects | Writing data to server |
+
+**Key Insight: Queries vs Mutations**
+
+```typescript
+// useQuery = "I need data NOW"
+const [data] = useQuery(getData, params);
+// ↑ Executes immediately when component renders
+// During SSR: tries to access cookies/database → ERROR
+
+// useMutation = "I might need to save data LATER"
+const [saveMutation] = useMutation(saveData);
+// ↑ Just creates a function, doesn't execute anything
+// During SSR: perfectly safe, no side effects
+// Later: onClick={() => saveMutation(data)} ← runs on user interaction
+```
+
+**Mental Model:**
+- **Queries are eager**: They fetch when the component renders
+- **Mutations are lazy**: They only run when you explicitly call them
+- During SSR, "eager" operations outside Suspense cause errors
+
+---
+
+### Suspense Boundaries and Dynamic Server Usage
+
+**Location**: [`apps/fullstack/app/core/layouts/authenticated_page_layout.tsx`](../apps/fullstack/app/core/layouts/authenticated_page_layout.tsx)
+
+**Understanding Suspense as "Loading Zones":**
+
+```typescript
+const AuthenticatedPageLayout = () => {
+  // ⚠️ OUTSIDE SUSPENSE - Must be synchronously available during SSR
+  const syncData = useSomeHook(); // ← Must not access cookies/DB/dynamic data
+
+  return (
+    <div>
+      {/* ✅ INSIDE SUSPENSE - Can fetch data asynchronously */}
+      <Suspense fallback={<div>Loading...</div>}>
+        <ComponentThatUsesQuery /> {/* ← Safe to use useQuery here */}
+      </Suspense>
+
+      <Footer data={syncData} /> {/* ← Uses data from outside Suspense */}
+    </div>
+  );
+};
+```
+
+**Why Suspense boundaries matter:**
+
+1. **Outside Suspense**: Code runs during server-side rendering
+   - Must complete synchronously
+   - Cannot access request-specific data (cookies, headers)
+   - Cannot make database queries
+   - Think: "static" or "universal" code
+
+2. **Inside Suspense**: Code can defer/suspend
+   - Can access request data
+   - Can make async database queries
+   - Shows fallback while loading
+   - Think: "dynamic" or "personalized" code
+
+**The Architecture We Ended Up With:**
+
+```typescript
+// Layout: No queries, stays lightweight
+const AuthenticatedPageLayout = () => {
+  return (
+    <div>
+      <Suspense fallback={<Loading />}>
+        {children} {/* Pages can use queries */}
+      </Suspense>
+      <Footer /> {/* No query needed */}
+      <DarkModeEffect /> {/* Has its own Suspense wrapper inside */}
+    </div>
+  );
+};
+
+// DarkModeEffect: Query wrapped in Suspense
+export const DarkModeEffect = memo(function DarkModeEffect() {
+  return (
+    <Suspense fallback={null}>
+      <DarkModeEffectInner /> {/* ← useQuery is safe here */}
+    </Suspense>
+  );
+});
+
+// Footer: Only needs mutations, no queries
+export function Footer() {
+  const [updateUserOptions] = useMutation(updateUserOptions);
+  return <ThemeSwitcher onChange={(pref) => updateUserOptions({ themePreference: pref })} />;
+}
+```
+
+**Why this architecture works:**
+
+- **Progressive loading**: Static parts render immediately, dynamic parts load in background
+- **No flash of wrong content**: Theme sync happens via `DarkModeEffect` which has Suspense
+- **Clean separation**: Reading data (queries) vs writing data (mutations) are separate concerns
+
+**Pattern to remember:**
+- Queries (reading data) → need Suspense boundary during SSR
+- Mutations (writing data) → safe anywhere, they're just functions
+- "Can I call this during SSR?" → If it touches cookies/DB/request data, it needs Suspense
+
+---
+
+### Blitz.js Route Generation
+
+**Problem Encountered**: `Routes.PlacemarkIndex is not a function`
+
+**What happened:**
+
+Blitz.js auto-generates route helper functions from your page components:
+
+```typescript
+// File: pages/index.tsx
+const PlacemarkIndex: BlitzPage = () => { /* ... */ };
+export default PlacemarkIndex;
+
+// Blitz auto-generates:
+Routes.PlacemarkIndex() → "/"
+Routes.PlacemarkIndex({ parent: "123" }) → "/?parent=123"
+```
+
+**The Bug:**
+
+We had two files with the same component name:
+- `pages/index.tsx` → exports `PlacemarkIndex`
+- `pages/index_originial.tsx` → exports `PlacemarkIndex` (commented out, but file existed)
+
+**Error from Next.js:**
+```
+The page component is named "PlacemarkIndex" on the following routes:
+  /
+  /index_originial
+
+The page component must have a unique name across all routes
+```
+
+**Why this breaks route generation:**
+- Blitz tries to create `Routes.PlacemarkIndex()`
+- But which file should it point to? `index.tsx` or `index_originial.tsx`?
+- Unable to resolve ambiguity → **doesn't generate the route helper at all**
+- Code that calls `Routes.PlacemarkIndex()` → runtime error: "not a function"
+
+**The Fix:**
+
+Rename the backup file to a pattern Next.js ignores:
+
+```bash
+# ❌ Next.js processes these:
+index_originial.tsx
+index.backup.tsx
+
+# ✅ Next.js ignores these:
+index_reference.tsx.backup  # Double extension
+index.tsx.bak
+index.txt
+```
+
+**File patterns Next.js processes:**
+- `.tsx` → TypeScript + JSX
+- `.ts` → TypeScript
+- `.jsx` → JavaScript + JSX
+- `.js` → JavaScript
+
+Everything else is ignored.
+
+**Pattern to remember:**
+1. Page component names must be **unique across all route files**
+2. Blitz generates `Routes.ComponentName()` from your component's name
+3. Use `.backup`, `.bak`, or move files outside `pages/` to keep them as reference
+4. Duplicate names = no route generation = runtime errors
 
 ---
 

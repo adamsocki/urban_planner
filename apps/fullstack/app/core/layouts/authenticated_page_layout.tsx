@@ -25,7 +25,6 @@ import { Feedback } from "app/components/feedback";
 import clsx from "clsx";
 import { KeybindingsIndex } from "app/components/keybindings_index";
 import { Footer } from "app/components/footer";
-import { useUpdateUser } from "app/hooks/update_user";
 
 export function UserBlock() {
   const currentUser = useCurrentUser();
@@ -65,13 +64,13 @@ const AuthenticatedPageLayout = ({
   fullWidth?: boolean;
 }) => {
   const isSm = useBreakpoint("sm");
-  const { user, setUser } = useUpdateUser();
 
   return (
     <Provider>
       <>
         <LayoutHead title={title || ""}></LayoutHead>
         <div>
+          <div>
           <div className="flex flex-col min-h-screen bg-white text-gray-700 dark:bg-gray-800 dark:text-white">
             <Suspense fallback={<MinimalHeader />}>
               <div className="flex flex-auto border-b dark:border-black border-gray-200 px-2 lg:px-0">
@@ -91,7 +90,7 @@ const AuthenticatedPageLayout = ({
               </div>
             </Suspense>
             <div
-              className="flex-auto sm:pb-40 order-1 px-6 md:px-8"
+              className="flex flex-col flex-auto order-1 px-6 md:px-8"
               style={{
                 minWidth: 0,
               }}
@@ -114,15 +113,12 @@ const AuthenticatedPageLayout = ({
                   <Suspense fallback={<Loading />}>{children}</Suspense>
                 </DefaultErrorBoundary>
               </div>
+            <Footer maxWidthClassName="order-last mx-auto max-w-4xl w-full mt-auto" />
+
             </div>
-            <Footer
-              maxWidthClassName="mx-auto max-w-4xl px-6 md:px-8"
-              user={user}
-              onThemePreferenceChange={(themePreference) => {
-                void setUser({ themePreference });
-              }}
-            />
+                </div>
           </div>
+
         </div>
         <KeybindingsIndex />
         <Dialogs />

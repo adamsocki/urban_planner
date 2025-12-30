@@ -15,8 +15,8 @@ import toast from "react-hot-toast";
 const WALKTHROUGH_CONTENT: Record<WalkthroughState, React.ReactNode> = {
   [WalkthroughState.V1_00_CREATEMAP]: (
     <>
-      Welcome to Placemark! This is where your maps live. Start off by creating
-      your first map!
+      Welcome to Planner! This is where your projects live. Start off by creating
+      your first project!
     </>
   ),
   [WalkthroughState.V1_01_MENU]: (

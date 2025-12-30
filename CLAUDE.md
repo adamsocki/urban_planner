@@ -1,5 +1,14 @@
 # Claude Notes
 
+## Project Vision & Documentation
+
+This project is building an **AI-powered urban planning document generation platform**, starting with an MVP focused on SS4A (Safe Streets and Roads for All) plan generation.
+
+- **Vision Document**: [`docs/VISION.md`](./docs/VISION.md) - Comprehensive project vision covering problem/market opportunity, technical architecture, business model, and 1-year roadmap
+- **Agent Guidance**: [`AGENTS.md`](./AGENTS.md) - Best practices for AI agents working with this codebase
+
+Review the vision document to understand the overall project goals, technical decisions, and roadmap before starting significant new work.
+
 ## Learning & Development Approach
 
 This project is a learning environment for TypeScript and modern web development. When Claude provides responses:

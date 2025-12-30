@@ -15,7 +15,7 @@ import { useRouter } from "next/router";
 import { Routes } from "@blitzjs/next";
 import { useCreateMap } from "app/hooks/use_create_map";
 
-interface IndexResults {
+interface Results {
   wfcAndFolders: QItem[];
   actions: QItem[];
 }

@@ -23,7 +23,7 @@ const PlacemarkIndex: BlitzPage = () => {
   return (
     <>
       <Head>
-        <title>{formatTitle("Maps")}</title>
+        <title>{formatTitle("Projects")}</title>
       </Head>
 
       <IndexHeader />
@@ -35,9 +35,9 @@ const PlacemarkIndex: BlitzPage = () => {
   );
 };
 
-PlacemarkIndex.authenticate = { redirectTo: Routes.SigninPage().pathname };
+PlacemarkIndex.authenticate = { redirectTo: Routes.SigninPage().pathname }  ;
 PlacemarkIndex.getLayout = (page) => (
-  <AuthenticatedPageLayout title="Maps">{page}</AuthenticatedPageLayout>
+  <AuthenticatedPageLayout title="Projects">{page}</AuthenticatedPageLayout>
 );
 
 export const getServerSideProps = gSSP(async ({ req, res }) => {

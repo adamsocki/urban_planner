@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { useMutation } from "@blitzjs/rpc";
+import Link from "next/link";
 import { LabeledTextField } from "app/core/components/LabeledTextField";
 import { Form, FORM_ERROR } from "app/core/components/Form";
 import { styledInlineA } from "app/components/elements";
@@ -72,19 +73,13 @@ export const SignupForm = () => {
       </div>
       <div className="text-sm pt-10">
         By signing up, you agree to our{" "}
-        <a
-          className={styledInlineA}
-          href="https://www.placemark.io/documentation/terms-of-service"
-        >
+        <Link className={styledInlineA} href="/terms">
           Terms of Service
-        </a>
+        </Link>
         {" and "}
-        <a
-          className={styledInlineA}
-          href="https://www.placemark.io/documentation/privacy"
-        >
+        <Link className={styledInlineA} href="/privacy">
           Privacy policy
-        </a>
+        </Link>
         .
       </div>
       <AlreadyHaveAccount />

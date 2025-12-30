@@ -2,6 +2,8 @@
 
 A learning-focused TypeScript project built on **Placemark** (Blitz.js/Next.js) for urban planning document generation.
 
+**Vision:** AI-powered platform that automates 70-80% of expensive planning documents (starting with SS4A plans). See [`docs/VISION.md`](./docs/VISION.md) for the comprehensive project vision, roadmap, and technical architecture.
+
 **Note:** This is a learning environment for TypeScript and modern web development. Code includes comments explaining what's happening and why patterns are chosen. Responses explain the reasoning behind architectural choices and TypeScript patterns.
 
 This repo currently runs only the **Placemark fullstack app** (Blitz.js) as `apps/fullstack`.

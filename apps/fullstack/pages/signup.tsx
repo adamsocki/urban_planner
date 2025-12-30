@@ -13,16 +13,16 @@ const SignupPage: BlitzPage = () => {
           fraction of the time and cost of traditional planning projects.
         </div>
         <ul className="list-disc pl-6 text-purple-700 dark:text-purple-300">
-          <li>500 maps</li>
-          <li>Team collaboration</li>
-          <li>Data-driven styling</li>
-          <li>10+ data formats</li>
-          <li>REST APIs</li>
-          <li>GIS operations</li>
-          <li>Identify Public Engagement Needs</li>
-          <li>Generate plans with a click</li>
-          <li>Powerful table view</li>
-        </ul>
+  <li>Generate planning documents in days, not months</li>
+  <li>AI-powered analysis and writing (70-80% automated)</li>
+  <li>SS4A safety plans with crash data analysis</li>
+      <li>Demographic impact assessments</li>
+  <li>Site plan analysis and environmental reviews</li>
+  <li>Professional Word/PDF exports</li>
+  <li>GIS visualization and mapping</li>
+  <li>Team collaboration and review workflows</li>
+  <li>Fraction of consultant costs ($299/mo vs $400k)</li>
+</ul>
       </div>
       <Suspense fallback={<Loading />}>
         <SignupForm />
