@@ -103,6 +103,7 @@ model Organization {
   mapboxLayers                   MapboxLayer[]
   membership                     Membership[]
   wrappedFeatureCollections      WrappedFeatureCollection[]
+  projects                       Project[]
   WrappedFeatureCollectionFolder WrappedFeatureCollectionFolder[]
 }
 
@@ -168,6 +169,8 @@ model WrappedFeatureCollection {
   wrappedFeatures WrappedFeature[]
   organization    Organization                   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   organizationId  Int
+  project         Project?                       @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  projectId       String?
   createdAt       DateTime                       @default(now())
   updatedAt       DateTime                       @updatedAt
   createdById     Int?
@@ -189,7 +192,28 @@ model WrappedFeatureCollection {
   wrappedFeatureCollectionFolderId String?                         @db.Uuid
 
   @@index(fields: [organizationId])
+  @@index(fields: [projectId])
   @@index(fields: [wrappedFeatureCollectionFolderId])
+}
+
+model Project {
+  id          String   @id
+  name        String   @default("Untitled Project")
+  description String   @default("")
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId Int
+
+  createdBy   User? @relation(fields: [createdById], references: [id])
+  createdById Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  maps WrappedFeatureCollection[]
+
+  @@index(fields: [organizationId])
+  @@index(fields: [createdById])
 }
 
 ///  A folder used to organize WrappedFeatureCollections
@@ -337,6 +361,7 @@ model User {
   walkthroughState WalkthroughState @default(V1_00_CREATEMAP)
 
   wrappedFeatureCollections       WrappedFeatureCollection[]
+  projects                       Project[]
   folders                         Folder[]
   tokens                          Token[]
   sessions                        Session[]

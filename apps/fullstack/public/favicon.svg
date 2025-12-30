@@ -1,0 +1,31 @@
+<svg viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background for better visibility on different browser tabs -->
+  <rect width="300" height="300" fill="white"/>
+
+  <!-- Connection lines - infrastructure between zones -->
+  <g stroke="#a855f7" stroke-width="8" opacity="0.6">
+    <!-- Hub-to-satellite connections -->
+    <line x1="150" y1="150" x2="75" y2="75"/>
+    <line x1="150" y1="150" x2="225" y2="75"/>
+    <line x1="150" y1="150" x2="240" y2="180"/>
+    <line x1="150" y1="150" x2="180" y2="240"/>
+    <line x1="150" y1="150" x2="75" y2="210"/>
+
+    <!-- Outer network connections -->
+    <line x1="75" y1="75" x2="225" y2="75"/>
+    <line x1="225" y1="75" x2="240" y2="180"/>
+  </g>
+
+  <!-- Satellite nodes - smaller districts/zones -->
+  <circle cx="75" cy="75" r="25" fill="#a855f7"/>
+  <circle cx="225" cy="75" r="22" fill="#a855f7"/>
+  <circle cx="240" cy="180" r="20" fill="#a855f7"/>
+  <circle cx="180" cy="240" r="22" fill="#a855f7"/>
+  <circle cx="75" cy="210" r="24" fill="#a855f7"/>
+
+  <!-- Central hub - main planning node -->
+  <circle cx="150" cy="150" r="35" fill="#a855f7"/>
+
+  <!-- Inner detail in central hub -->
+  <circle cx="150" cy="150" r="15" fill="none" stroke="white" stroke-width="3" opacity="0.3"/>
+</svg>

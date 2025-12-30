@@ -5,11 +5,14 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <meta name="application-name" content="Placemark" />
+          <meta name="application-name" content="Planner" />
           <meta name="mobile-web-app-capable" content="yes" />
-          <meta name="theme-color" content="#000000" />
+          <meta name="theme-color" content="#a855f7" />
           <link rel="preconnect" href="https://api.mapbox.com/" />
-          <link rel="icon" href="/favicon.ico" />
+          {/* Modern browsers support SVG favicons */}
+          <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+          {/* Fallback for older browsers */}
+          <link rel="icon" type="image/x-icon" href="/favicon.ico" />
           <link rel="manifest" href="/manifest.json" />
           {/* eslint-disable-next-line */}
           <link

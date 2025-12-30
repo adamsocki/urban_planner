@@ -73,8 +73,8 @@ const AuthenticatedPageLayout = ({
           <div>
           <div className="flex flex-col min-h-screen bg-white text-gray-700 dark:bg-gray-800 dark:text-white">
             <Suspense fallback={<MinimalHeader />}>
-              <div className="flex flex-auto border-b dark:border-black border-gray-200 px-2 lg:px-0">
-                <nav className="w-full max-w-4xl mx-auto flex items-center flex-auto gap-x-2 py-2">
+              <div className="flex border-b dark:border-black border-gray-200 px-2 lg:px-0">
+                <nav className="w-full max-w-4xl mx-auto flex items-center flex-auto gap-x-2 py-1">
                   <MinimalHeaderLogoLink />
                   <UserBlock />
                   <div className="flex-auto" />
@@ -102,7 +102,7 @@ const AuthenticatedPageLayout = ({
                 )}
               >
                 {title ? (
-                  <div className="flex justify-between items-center pt-0 pb-8">
+                  <div className="flex justify-between items-center pt-0 pb-3">
                     <h1 className="text-2xl font-bold leading-7 text-gray-900 dark:text-gray-100 sm:text-3xl sm:tracking-tight sm:truncate">
                       {title}
                     </h1>

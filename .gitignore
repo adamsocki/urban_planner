@@ -1,11 +1,11 @@
 # Dependencies
 node_modules/
 .pnp.*
-.pnpm-store/
 .yarn/cache/
 .yarn/unplugged/
 .yarn/build-state.yml
-
+.yarn/unplugged/
+.yarn/build-state.yml
 # Build outputs
 dist/
 out/
@@ -13,40 +13,38 @@ out/
 .turbo/
 .vercel/
 .netlify/
-
 # Env files (keep examples)
 .env
 .env.*
 !.env.example
 !.env.*.example
-
 # Local tooling / IDE
 .claude/
 .idea/
 .vscode/
 *.swp
 *.swo
-
 # OS
 .DS_Store
-Thumbs.db
-
+Thumbs.b
 # Logs
 *.log
 logs/
 npm-debug.log*
 pnpm-debug.log*
-
 # Coverage
 coverage/
 .nyc_output/
-
 # Caches
 .eslintcache
 *.tsbuildinfo
-
 # Databases
 *.db
 *.sqlite
 *.sqlite-journal
 *.backup
+
+# Ignore generated project scaffolding and temporary documentation
+apps/fullstack/app/projects/
+apps/fullstack/pages/project/
+docs/guides/
