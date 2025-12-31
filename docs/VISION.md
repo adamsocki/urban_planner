@@ -217,6 +217,7 @@ Creating an internal guidance vision document for an urban planning automation p
 - **Primary: Claude (Anthropic)**: Strong reasoning, long context, good for technical writing
 - **Fallback: GPT-4**: Proven, widely used, good documentation
 - **Future: Open models**: Consider Llama, Mistral for cost reduction at scale
+- ** Notes: This isn't a priority for MVP, but should be considered for future scaling.
 
 #### 4.4 Database Schema Extensions
 
